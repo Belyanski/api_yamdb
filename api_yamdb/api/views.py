@@ -4,10 +4,13 @@ from django.shortcuts import get_object_or_404
 from django.core.mail import send_mail
 from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import (LimitOffsetPagination,
+                                       PageNumberPagination)
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from api.permissions import AdminOrReadOnly, IsAdmin, IsAuthorOrModer, IsRoleAdmin
 from api.serializers import (AdminUserSerializer,
                              SignUpSerializer,
                              TokenSerializer,
@@ -33,7 +36,7 @@ class TokenView(APIView):
             return Response({'Неверный код'},
                             status=status.HTTP_400_BAD_REQUEST)
         token = RefreshToken.for_user(user)
-        return Response({'token': token.access_token},
+        return Response({'token': str(token.access_token)},
                         status=status.HTTP_200_OK)
 
 
@@ -64,7 +67,7 @@ class UserRegView(APIView):
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = AdminUserSerializer
-    # permission_classes 
+    permission_classes = (IsRoleAdmin,)
     filter_backends = (filters.SearchFilter,)
     lookup_field = 'username'
     lookup_value_regex = r'[\w\@\.\+\-]+'
