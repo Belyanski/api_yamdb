@@ -4,6 +4,9 @@ from .validators import validate_year
 from users.models import User
 
 
+LETTERS_LIMIT = 15
+
+
 class Category(models.Model):
     name = models.CharField(
         'Имя категории',
@@ -145,4 +148,4 @@ class Comments(models.Model):
         ordering = ['-pub_date']
 
     def __str__(self):
-        return self.text[:15]
+        return self.text[:LETTERS_LIMIT]
