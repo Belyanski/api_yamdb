@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
@@ -41,9 +40,7 @@ class GenreViewSet(ModelMixinSet):
 
 class TitleViewSet(viewsets.ModelViewSet):
     """Получить список всех объектов без токена."""
-    queryset = Title.objects.annotate(
-        rating=Avg('reviews__score')
-    ).all()
+    queryset = Title.objects.all()
     permission_classes = (AdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend, )
     filterset_class = TitleFilter
