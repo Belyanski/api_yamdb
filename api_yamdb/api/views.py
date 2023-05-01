@@ -73,15 +73,6 @@ class UsersViewSet(viewsets.ModelViewSet):
     search_fields = ('username',)
     http_method_names = ['get', 'post', 'patch', 'delete']
 
-    def perform_create(self, serializer):
-        review = get_object_or_404(
-            Review, pk=self.kwargs.get('review_id'),
-            title_id=self.kwargs.get('title_id')
-        )
-        serializer.save(
-            author=self.request.user, review=review
-        )
-
     @action(detail=False, methods=['get', 'patch'], url_path='me',
             url_name='me', permission_classes=(permissions.IsAuthenticated,))
     def about_me(self, request):
@@ -189,3 +180,12 @@ class CommentViewSet(viewsets.ModelViewSet):
             title_id=self.kwargs.get('title_id')
         )
         return review.comments.all()
+
+    def perform_create(self, serializer):
+        review = get_object_or_404(
+            Review, pk=self.kwargs.get('review_id'),
+            title=self.kwargs.get('title_id')
+        )
+        serializer.save(
+            author=self.request.user, review=review
+        )
