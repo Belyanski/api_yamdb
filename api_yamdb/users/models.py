@@ -30,6 +30,7 @@ class User(AbstractUser):
                               null=False)
     confirmation_code = models.CharField(max_length=40,
                                          blank=True,
+                                         null=True,
                                          verbose_name='Проверочный код')
     first_name = models.CharField(max_length=150,
                                   verbose_name='Имя',
