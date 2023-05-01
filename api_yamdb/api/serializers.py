@@ -11,17 +11,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         model = User
         fields = ('username', 'email', )
 
-    def validate_exist(self, attrs):
-        username = attrs.get('username')
-        check_user = get_object_or_404(User, username=username)
-        if check_user.exists():
-            raise ValidationError('Пользователь с таким именем уже '
-                                  'зарегистрирован')
-        email = attrs.get('email')
-        check_email = get_object_or_404(User, email=email)
-        if check_email.exists():
-            raise ValidationError('Почта уже зарегистрированa')
-
     def validate_username(self, value):
         if value == 'me':
             raise serializers.ValidationError(
@@ -40,8 +29,16 @@ class TokenSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(required=True)
-    email = serializers.CharField(required=True)
+    username = serializers.RegexField(
+        regex=r'^[\w.@+-]+$',
+        max_length=150,
+        required=True
+    )
+
+    email = serializers.EmailField(
+        max_length=254,
+        required=True
+    )
     role = serializers.StringRelatedField(read_only=True)
 
     class Meta:
