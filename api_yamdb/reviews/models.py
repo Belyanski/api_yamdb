@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from .validators import validate_year
+from users.models import User
 
 
 class Category(models.Model):
@@ -144,6 +145,5 @@ class Comments(models.Model):
     class Meta:
         ordering = ['-pub_date']
 
-from users.models import User
     def __str__(self):
         return self.text[:15]

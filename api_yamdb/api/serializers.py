@@ -1,6 +1,8 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from django.db.models import Avg
 
+from reviews.models import Title, Genre, Category, Review, Comments
 from users.models import User
 
 
@@ -88,12 +90,6 @@ class AdminUserSerializer(serializers.ModelSerializer):
                 'Имя пользователя "me" запрещено.'
             )
         return value
-
-from rest_framework import serializers
-
-from django.db.models import Avg
-
-from reviews.models import Title, Genre, Category, Review, Comments
 
 
 class CategorySerializer(serializers.ModelSerializer):
