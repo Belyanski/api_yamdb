@@ -10,9 +10,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken
 
-from .permissions import (IsAdminUserOrReadOnly,
-                          IsAuthorAdminSuperuserOrReadOnlyPermission,
-                          IsAdminPermission)
+from .permissions import IsAdminPermission
 from .serializers import (AdminUserSerializer,
                           SignUpSerializer,
                           TokenSerializer,
@@ -61,7 +59,7 @@ class SignUpView(APIView):
         except IntegrityError:
             return Response(
                 'Такой логин или email уже существуют',
-                status=status.HTTP_200_OK
+                status=status.HTTP_400_BAD_REQUEST
             )
         confirmation_code = default_token_generator.make_token(user)
         user.confirmation_code = confirmation_code

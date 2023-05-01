@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from rest_framework.exceptions import ValidationError
 
 from users.models import User
 
@@ -22,7 +21,7 @@ class SignUpSerializer(serializers.Serializer):
         fields = ('username', 'email', )
 
     def validate(self, data):
-        """Запрет на имя me, А так же Уникальность полей username и email."""
+        """Запрет на регистрацию логина me."""
         if data.get('username').lower() == 'me':
             raise serializers.ValidationError(
                 'Использовать имя me запрещено'
