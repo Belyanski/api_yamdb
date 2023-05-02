@@ -72,6 +72,7 @@ class UsersViewSet(viewsets.ModelViewSet):
     lookup_field = 'username'
     search_fields = ('username',)
     http_method_names = ['get', 'post', 'patch', 'delete']
+    pagination_class = LimitOffsetPagination
 
     @action(detail=False, methods=['get', 'patch'], url_path='me',
             url_name='me', permission_classes=(permissions.IsAuthenticated,))
@@ -117,6 +118,7 @@ class CategoryViewSet(ModelMixinSet):
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', )
     lookup_field = 'slug'
+    pagination_class = LimitOffsetPagination
 
 
 class GenreViewSet(ModelMixinSet):
@@ -128,6 +130,7 @@ class GenreViewSet(ModelMixinSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', )
     lookup_field = 'slug'
+    pagination_class = LimitOffsetPagination
 
 
 class TitleViewSet(viewsets.ModelViewSet):
@@ -136,6 +139,7 @@ class TitleViewSet(viewsets.ModelViewSet):
     permission_classes = (AdminOrReadOnly,)
     filter_backends = (DjangoFilterBackend, )
     filterset_class = TitleFilter
+    pagination_class = LimitOffsetPagination
 
     def get_serializer_class(self):
         if self.action in ('list', 'retrieve'):
