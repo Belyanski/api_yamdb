@@ -4,29 +4,24 @@ from django.core.mail import send_mail
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, permissions, status, viewsets
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.decorators import action
 from rest_framework_simplejwt.tokens import AccessToken
 
 from reviews.models import Category, Genre, Review, Title
 from users.models import User
+from .mixins import ModelMixinSet
 from .filters import TitleFilter
-from .permissions import (IsAdminPermission, AdminOrReadOnly,
+from .permissions import (IsAdminPermission, IsAdminUserOrReadOnly,
                           IsAuthorAdminSuperuserOrReadOnlyPermission)
 from .serializers import (
     AdminUserSerializer, SignUpSerializer, TokenSerializer, UserSerializer,
     CategorySerializer, CommentSerializer, GenreSerializer,
     ReviewSerializer, TitleReadSerializer, TitleWriteSerializer,
 )
-
-
-class ModelMixinSet(mixins.ListModelMixin, mixins.CreateModelMixin,
-                    mixins.DestroyModelMixin, GenericViewSet):
-    pass
 
 
 class SignUpView(APIView):
@@ -114,7 +109,7 @@ class CategoryViewSet(ModelMixinSet):
     """Получить список всех категорий без токена."""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (AdminOrReadOnly,)
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (filters.SearchFilter, )
     search_fields = ('name', )
     lookup_field = 'slug'
@@ -126,7 +121,7 @@ class GenreViewSet(ModelMixinSet):
     Получить список всех жанров без токена."""
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = (AdminOrReadOnly,)
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name', )
     lookup_field = 'slug'
@@ -136,7 +131,7 @@ class GenreViewSet(ModelMixinSet):
 class TitleViewSet(viewsets.ModelViewSet):
     """Получить список всех объектов без токена."""
     queryset = Title.objects.all()
-    permission_classes = (AdminOrReadOnly,)
+    permission_classes = (IsAdminUserOrReadOnly,)
     filter_backends = (DjangoFilterBackend, )
     filterset_class = TitleFilter
     pagination_class = LimitOffsetPagination

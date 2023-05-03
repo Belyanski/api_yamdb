@@ -25,8 +25,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=254,
                               verbose_name='E-mail',
                               help_text='Укажите e-mail',
-                              unique=True,
-                              null=False)
+                              unique=True)
     confirmation_code = models.CharField(max_length=40,
                                          blank=True,
                                          null=True,

@@ -78,6 +78,10 @@ class Title(models.Model):
     class Meta:
         verbose_name = 'Произведение'
         verbose_name_plural = 'Произведения'
+        indexes = [
+            models.Index(fields=['name', 'year']),
+            models.Index(fields=['name'], name='name_idx'),
+        ]
 
     def __str__(self):
         return self.name
