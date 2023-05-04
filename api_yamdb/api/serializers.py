@@ -22,13 +22,11 @@ class SignUpSerializer(serializers.Serializer):
     class Meta:
         fields = ('username', 'email', )
 
-    def validate(self, data):
+    def validate_username(self, value):
         """Запрет на регистрацию логина me."""
-        if data.get('username').lower() == 'me':
-            raise serializers.ValidationError(
-                'Использовать имя me запрещено'
-            )
-        return data
+        if value.lower() == 'me':
+            raise serializers.ValidationError('Использовать имя me запрещено')
+        return value
 
 
 class TokenSerializer(serializers.ModelSerializer):
