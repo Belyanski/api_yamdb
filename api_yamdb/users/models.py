@@ -1,21 +1,19 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 
 
-ADMIN = 'admin'
-MODERATOR = 'moderator'
-USER = 'user'
-
-USER_ROLE = (
-    (USER, 'user'),
-    (MODERATOR, 'moderator'),
-    (ADMIN, 'admin'),
-)
-
-
 class User(AbstractUser):
+    ADMIN = 'admin'
+    MODERATOR = 'moderator'
+    USER = 'user'
+
+    USER_ROLE = (
+        (USER, 'user'),
+        (MODERATOR, 'moderator'),
+        (ADMIN, 'admin'),
+    )
+
     username = models.CharField(
         max_length=150,
         verbose_name='Логин',
@@ -54,16 +52,11 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.is_staff or self.role == ADMIN
+        return self.is_staff or self.role == User.ADMIN
 
     @property
     def is_moderator(self):
-        return self.role == MODERATOR
+        return self.role == User.MODERATOR
 
     def __str__(self):
         return self.username
-
-    def validate_username(self):
-        '''Проверка поля username.'''
-        if self.username == 'me':
-            raise ValidationError('Использовать имя me запрещено.')

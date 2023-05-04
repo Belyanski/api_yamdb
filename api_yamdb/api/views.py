@@ -19,7 +19,7 @@ from .filters import TitleFilter
 from .permissions import (IsAdminPermission, IsAdminUserOrReadOnly,
                           IsAuthorAdminSuperuserOrReadOnlyPermission)
 from .serializers import (
-    AdminUserSerializer, SignUpSerializer, TokenSerializer, UserSerializer,
+    TokenSerializer, UserSerializer,
     CategorySerializer, CommentSerializer, GenreSerializer,
     ReviewSerializer, TitleReadSerializer, TitleWriteSerializer,
 )
@@ -31,12 +31,12 @@ class SignUpView(APIView):
     письмо с кодом для получения токена.
     '''
     permission_classes = (permissions.AllowAny,)
-    serializer_class = SignUpSerializer
+    serializer_class = UserSerializer
     queryset = User.objects.all()
 
     def post(self, request, *args, **kwargs):
         """Создание пользователя И Отправка письма с кодом."""
-        serializer = SignUpSerializer(data=request.data)
+        serializer = UserSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             user, _ = User.objects.get_or_create(
@@ -62,7 +62,7 @@ class SignUpView(APIView):
 
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = AdminUserSerializer
+    serializer_class = UserSerializer
     permission_classes = (IsAdminPermission,)
     filter_backends = (filters.SearchFilter,)
     lookup_field = 'username'
@@ -73,14 +73,15 @@ class UsersViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['get', 'patch'], url_path='me',
             url_name='me', permission_classes=(permissions.IsAuthenticated,))
     def about_me(self, request):
-        serializer = UserSerializer(request.user)
         if request.method == 'PATCH':
             serializer = UserSerializer(
-                request.user, data=request.data, partial=True
+                request.user, data=request.data,
+                partial=True
             )
             serializer.is_valid(raise_exception=True)
-            serializer.save()
+            serializer.save(role=request.user.role)
             return Response(serializer.data, status=status.HTTP_200_OK)
+        serializer = UserSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
