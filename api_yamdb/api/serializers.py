@@ -1,9 +1,7 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
 from django.db.models import Avg
 
-from reviews.models import Title, Genre, Category, Review, Comments
+from reviews.models import Comments, Genre, Category, Title, Review
 from users.models import User
 
 
@@ -20,12 +18,12 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.RegexField(
         regex=r'^[\w.@+-]+$',
         max_length=150,
-        required=True,
+        required=True
     )
 
     email = serializers.EmailField(
         max_length=254,
-        required=True
+        required=True,
     )
 
     class Meta:
@@ -43,6 +41,15 @@ class UserSerializer(serializers.ModelSerializer):
                 'Имя пользователя "me" запрещено.'
             )
         return value
+
+
+class UsersSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = (
+            'username', 'email', 'first_name', 'last_name', 'bio', 'role',
+        )
 
 
 class CategorySerializer(serializers.ModelSerializer):

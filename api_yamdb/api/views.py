@@ -17,12 +17,11 @@ from users.models import User
 from .mixins import ModelMixinSet
 from .filters import TitleFilter
 from .permissions import (IsAdminPermission, IsAdminUserOrReadOnly,
-                          IsAuthorAdminSuperuserOrReadOnlyPermission)
+                          IsAuthorAdminSuperuserOrReadOnlyPermission, )
 from .serializers import (
-    TokenSerializer, UserSerializer,
     CategorySerializer, CommentSerializer, GenreSerializer,
-    ReviewSerializer, TitleReadSerializer, TitleWriteSerializer,
-)
+    ReviewSerializer, TokenSerializer, TitleReadSerializer,
+    TitleWriteSerializer, UserSerializer, UsersSerializer)
 
 
 class SignUpView(APIView):
@@ -62,7 +61,7 @@ class SignUpView(APIView):
 
 class UsersViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UsersSerializer
     permission_classes = (IsAdminPermission,)
     filter_backends = (filters.SearchFilter,)
     lookup_field = 'username'
