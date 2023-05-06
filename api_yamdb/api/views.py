@@ -21,7 +21,7 @@ from .permissions import (IsAdminPermission, IsAdminUserOrReadOnly,
 from .serializers import (
     CategorySerializer, CommentSerializer, GenreSerializer,
     ReviewSerializer, TokenSerializer, TitleReadSerializer,
-    TitleWriteSerializer, UserSerializer, UsersSerializer)
+    TitleWriteSerializer, UserCreateSerializer, UsersSerializer)
 
 
 class SignUpView(APIView):
@@ -30,12 +30,12 @@ class SignUpView(APIView):
     письмо с кодом для получения токена.
     '''
     permission_classes = (permissions.AllowAny,)
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
     queryset = User.objects.all()
 
     def post(self, request, *args, **kwargs):
         """Создание пользователя И Отправка письма с кодом."""
-        serializer = UserSerializer(data=request.data)
+        serializer = UserCreateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         try:
             user, _ = User.objects.get_or_create(
@@ -73,14 +73,14 @@ class UsersViewSet(viewsets.ModelViewSet):
             url_name='me', permission_classes=(permissions.IsAuthenticated,))
     def about_me(self, request):
         if request.method == 'PATCH':
-            serializer = UserSerializer(
+            serializer = UserCreateSerializer(
                 request.user, data=request.data,
                 partial=True
             )
             serializer.is_valid(raise_exception=True)
             serializer.save(role=request.user.role)
             return Response(serializer.data, status=status.HTTP_200_OK)
-        serializer = UserSerializer(request.user)
+        serializer = UserCreateSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
