@@ -99,6 +99,6 @@ Password (again): <ваш_пароль>
 http://127.0.0.1:8000/redoc/
 ```
 ## Над проектом работали
-[Екатерина Короткова](https://github.com/antrodeka)
-[Семён Воронов](https://github.com/voronov-semen)
-[Ярослав Белянский](https://github.com/Belyanski)
+<br>[Екатерина Короткова](https://github.com/antrodeka)</br>
+<br>[Семён Воронов](https://github.com/voronov-semen)</br>
+<br>[Ярослав Белянский](https://github.com/Belyanski)</br>
