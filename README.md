@@ -1,7 +1,8 @@
 # API YaMDb
-[![Python](https://img.shields.io/badge/Python-v3.9.10-blue)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/Django-v3.2.16-green)](https://www.djangoproject.com/)
-[![Postman](https://img.shields.io/badge/Postman-v10.12.11-orange)](https://www.postman.com/)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat&logo=python&logoColor=white)
+![Django](https://img.shields.io/badge/-Django-092E20?style=flat&logo=django&logoColor=white)
+![Django REST framework](https://img.shields.io/badge/-Django%20REST%20framework-ff9900?style=flat&logo=django&logoColor=white)
+![Postman](https://img.shields.io/badge/-Postman-FF6C37?style=flat&logo=postman&logoColor=white)
 ## Описание проекта
 YaMDb - это проект, на котором люди могут оставлять отзывы о книгах, фильмах, музыке и других произведениях.  Произведения разделены на категории и им можно присвоить жанр. Администраторы могут добавлять новые произведения, категории и жанры. Пользователи могут оставлять свои отзывы и ставить оценки произведениям и комментировать отзывы других пользователей.
 ## Запуск проекта
